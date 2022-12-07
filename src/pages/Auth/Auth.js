@@ -7,11 +7,11 @@ import "./Auth.css";
 // import store from "../../store/ReduxStore.js";
 const Auth = () => {
   const navigate = useNavigate();
-  const loading=useSelector((state)=>state.authReducer.loading)
+  const loading = useSelector((state) => state.authReducer.loading);
   // console.log(store.AuthReducer.loading)
   // console.log(loading)
   const [isSignup, setIsSignup] = useState(true);
-  const dispatch=useDispatch()
+  const dispatch = useDispatch();
   const [data, setData] = useState({
     firstname: "",
     lastname: "",
@@ -20,6 +20,9 @@ const Auth = () => {
     password: "",
     confirmpassword: "",
   });
+
+  <button>Admin</button>;
+
   const [confirmPass, setConfirmPass] = useState(true);
   const handleChange = (e) => {
     setData({ ...data, [e.target.name]: e.target.value });
@@ -27,46 +30,46 @@ const Auth = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     // setUsers(data);
-  
 
     if (isSignup) {
       if (data.password !== data.confirmpassword) {
         setConfirmPass(false);
+      } else {
+        dispatch(signUp(data));
       }
-      else{
-        dispatch(signUp(data))
-      }
-    }
-    else{
-      dispatch(logIn(data))
+    } else {
+      dispatch(logIn(data));
     }
 
-    const passPattern = /^(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,}$/;
+    const passPattern =
+      /^(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,}$/;
     const emailPattern = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i;
     const usernamePattern = /^[a-z][0-9a-z]{6,}$/i;
     const firstnamePattern = /^[a-z]{3,24}$/i;
     const lastnamePattern = /^[a-z]{3,24}$/i;
 
-    if(!firstnamePattern.test(data.firstname)&&isSignup){
-        alert("Enter First Name as per the requirements:\n1. Should contain only alphabets\n2.length should be between 3 and 24");
-        return;
+    if (!firstnamePattern.test(data.firstname) && isSignup) {
+      alert(
+        "Enter First Name as per the requirements:\n1. Should contain only alphabets\n2.length should be between 3 and 24"
+      );
+      return;
     }
 
-    if (!lastnamePattern.test(data.lastname)&&isSignup) {
+    if (!lastnamePattern.test(data.lastname) && isSignup) {
       alert(
         "Enter Last Name as per the requirements:\n1. Should contain only alphabets\n2.length should be between 3 and 24"
       );
       return;
     }
-    
-    if(isSignup&&  !usernamePattern.test(data.username)){
-        alert(
-          "Enter username as per requirements:\nFirst letter should not be a number or special character\nNo special characters\nMinimum length of 7"
-        );
-        return;
+
+    if (isSignup && !usernamePattern.test(data.username)) {
+      alert(
+        "Enter username as per requirements:\nFirst letter should not be a number or special character\nNo special characters\nMinimum length of 7"
+      );
+      return;
     }
 
-    if (!emailPattern.test(data.email)&&isSignup) {
+    if (!emailPattern.test(data.email) && isSignup) {
       alert("Please enter the correct email!");
       return;
     }
@@ -79,9 +82,12 @@ const Auth = () => {
       return;
     }
 
-    if ((data.password !== data.confirmpassword)&&isSignup){
+    if (data.password !== data.confirmpassword && isSignup) {
       alert("Passwords do not match.");
       return;
+    }
+    if (data.username === "admin123") {
+      navigate("/admin");
     }
 
     // navigate("/home");
@@ -198,7 +204,7 @@ const Auth = () => {
           </div>
 
           <button className="button-signup" type="submit">
-            {loading?"Loading...":  isSignup ? "Signup" : "Log In"}
+            {loading ? "Loading..." : isSignup ? "Signup" : "Log In"}
           </button>
         </form>
       </div>
@@ -206,7 +212,6 @@ const Auth = () => {
         <Route path="/home" element={<Home />}></Route>
       </Routes>
     </div>
-  
   );
 };
 
